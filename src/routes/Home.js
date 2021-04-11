@@ -62,20 +62,21 @@ const GET_MOVIES = gql`
 // eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
   const { loading, error, data } = useQuery(GET_MOVIES);
-  return (
-    <Container>
-      <Header>
-        <Title>SOYEONG CINEMA</Title>
-        <Subtitle>React & Apollo & GraphQL</Subtitle>
-      </Header>
-      {loading && <Loading>Loading...</Loading>}
-      {!loading && data.movies && (
+  if (error) console.error(error);
+  else {
+    return (
+      <Container>
+        <Header>
+          <Title>SOYEONG CINEMA</Title>
+          <Subtitle>React & Apollo & GraphQL</Subtitle>
+        </Header>
+        {loading && <Loading>Loading...</Loading>}
         <Movies>
-          {data.movies.map((movie) => (
+          {data?.movies?.map((movie) => (
             <Movie key={movie.id} id={movie.id} bg={movie.medium_cover_image} />
           ))}
         </Movies>
-      )}
-    </Container>
-  );
+      </Container>
+    );
+  }
 };

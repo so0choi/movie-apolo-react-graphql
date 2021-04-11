@@ -15,8 +15,15 @@ const Container = styled.div`
   color: white;
 `;
 
+const SubContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+`;
+
 const Column = styled.div`
   margin-left: 10px;
+  width: 50%;
 `;
 
 const Title = styled.h1`
@@ -37,6 +44,9 @@ const Poster = styled.div`
   width: 25%;
   height: 60%;
   background-color: transparent;
+  background-image: url(${(props) => props.bg});
+  background-size: cover;
+  background-position: center center;
 `;
 
 /////////////
@@ -50,16 +60,38 @@ const GET_MOVIE = gql`
       medium_cover_image
       description_intro
     }
+    suggestions(id: $id) {
+      id
+      medium_cover_image
+    }
   }
 `;
 
 export default () => {
-  <Container>
-    <Column>
-      <Title>Name</Title>
-      <Subtitle>English · 4.5</Subtitle>
-      <Description>lorem ipsum lalalla </Description>
-    </Column>
-    <Poster></Poster>
-  </Container>;
+  const { id } = useParams();
+  const { loading, data } = useQuery(GET_MOVIE, {
+    variables: { id: +id },
+  });
+
+  return (
+    <>
+      <Container>
+        <Column>
+          <Title>{loading ? "Loading..." : data.movie.title}</Title>
+          <Subtitle>
+            {data?.movie?.language} · {data?.movie?.rating}
+          </Subtitle>
+          <Description>{data?.movie?.description_intro}</Description>
+        </Column>
+        <Poster bg={data?.movie?.medium_cover_image}></Poster>
+        <>
+          {" "}
+          {data?.suggestions?.map((movie) => (
+            <Poster bg={movie.medium_cover_image} key={movie.id}></Poster>
+          ))}
+        </>
+      </Container>
+      <SubContainer></SubContainer>
+    </>
+  );
 };
