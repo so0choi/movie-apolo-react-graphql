@@ -3,12 +3,19 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 import styled from "styled-components";
+import Movie from "../components/Movie";
 
 // css //
-const Container = styled.div`
+
+const Background = styled.div`
   height: 100vh;
   background-image: linear-gradient(-45deg, #d754ab, #fd723a);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
+`;
+const Container = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -16,9 +23,12 @@ const Container = styled.div`
 `;
 
 const SubContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 25px;
+  width: 65%;
+  position: relative;
+  margin-top: 10px;
 `;
 
 const Column = styled.div`
@@ -72,9 +82,10 @@ export default () => {
   const { loading, data } = useQuery(GET_MOVIE, {
     variables: { id: +id },
   });
+  console.log(data);
 
   return (
-    <>
+    <Background>
       <Container>
         <Column>
           <Title>{loading ? "Loading..." : data.movie.title}</Title>
@@ -84,14 +95,17 @@ export default () => {
           <Description>{data?.movie?.description_intro}</Description>
         </Column>
         <Poster bg={data?.movie?.medium_cover_image}></Poster>
-        <>
-          {" "}
-          {data?.suggestions?.map((movie) => (
-            <Poster bg={movie.medium_cover_image} key={movie.id}></Poster>
-          ))}
-        </>
       </Container>
-      <SubContainer></SubContainer>
-    </>
+      <SubContainer>
+        {data?.suggestions?.map((movie) => (
+          <Movie
+            bg={movie.medium_cover_image}
+            key={movie.id}
+            id={movie.id}
+            style={{ height: "10px" }}
+          ></Movie>
+        ))}
+      </SubContainer>
+    </Background>
   );
 };
