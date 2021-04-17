@@ -20,7 +20,7 @@ const Poster = styled.div`
 `;
 
 const LIKE_MOVIE = gql`
-  mutation likeMovie($id: Int!, $isLiked: Boolean) {
+  mutation likeMovie($id: Int!, $isLiked: Boolean!) {
     likeMovie(id: $id, isLiked: $isLiked) @client
   }
 `;
