@@ -7,15 +7,18 @@ import Movie from "../components/Movie";
 
 // css //
 
-const Background = styled.div`
+// const Background = styled.div`
+//   height: 100vh;
+//   background-image: linear-gradient(-45deg, #d754ab, #fd723a);
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   width: 100%;
+// `;
+const Container = styled.div`
   height: 100vh;
   background-image: linear-gradient(-45deg, #d754ab, #fd723a);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 100%;
-`;
-const Container = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -28,7 +31,7 @@ const SubContainer = styled.div`
   grid-gap: 25px;
   width: 65%;
   position: relative;
-  margin-top: 10px;
+  margin-top: 100px;
 `;
 
 const Column = styled.div`
@@ -85,27 +88,26 @@ export default () => {
   console.log(data);
 
   return (
-    <Background>
-      <Container>
-        <Column>
-          <Title>{loading ? "Loading..." : data.movie.title}</Title>
-          <Subtitle>
-            {data?.movie?.language} · {data?.movie?.rating}
-          </Subtitle>
-          <Description>{data?.movie?.description_intro}</Description>
-        </Column>
-        <Poster bg={data?.movie?.medium_cover_image}></Poster>
-      </Container>
-      <SubContainer>
+    // <Background>
+    <Container>
+      <Column>
+        <Title>{loading ? "Loading..." : data.movie.title}</Title>
+        <Subtitle>
+          {data?.movie?.language} · {data?.movie?.rating}
+        </Subtitle>
+        <Description>{data?.movie?.description_intro}</Description>
+      </Column>
+      <Poster bg={data?.movie?.medium_cover_image}></Poster>
+    </Container>
+    /*{ <SubContainer>
         {data?.suggestions?.map((movie) => (
           <Movie
             bg={movie.medium_cover_image}
             key={movie.id}
             id={movie.id}
-            style={{ height: "10px" }}
           ></Movie>
         ))}
-      </SubContainer>
-    </Background>
+      </SubContainer> }*/
+    // </Background>
   );
 };
